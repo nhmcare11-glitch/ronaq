@@ -51,30 +51,29 @@ export default function Hero() {
   function handleTouchStart(e: React.TouchEvent) {
     touchX.current = e.touches[0].clientX;
     touchY.current = e.touches[0].clientY;
-    // ✅ لا نمنع الأحداث الافتراضية
   }
 
   function handleTouchEnd(e: React.TouchEvent) {
     const dx = touchX.current - e.changedTouches[0].clientX;
     const dy = touchY.current - e.changedTouches[0].clientY;
-    
-    // تحقق من أن الحركة أفقية
+
     if (Math.abs(dy) > Math.abs(dx)) return;
     if (Math.abs(dx) < 40) return;
-    
-    // ✅ لا نستخدم preventDefault
-    const next = dx > 0
-      ? (manualIdx + 1) % TOTAL
-      : (manualIdx - 1 + TOTAL) % TOTAL;
+
+    const next =
+      dx > 0
+        ? (manualIdx + 1) % TOTAL
+        : (manualIdx - 1 + TOTAL) % TOTAL;
     goTo(next);
   }
 
-  const autoKeyframes = slides.map((_, i) => {
-    const start = (i / TOTAL) * 100;
-    const show = (1 / TOTAL) * 100;
-    const fadeIn = 2;
-    const fadeOut = 2;
-    return `
+  const autoKeyframes = slides
+    .map((_, i) => {
+      const start = (i / TOTAL) * 100;
+      const show = (1 / TOTAL) * 100;
+      const fadeIn = 2;
+      const fadeOut = 2;
+      return `
       @keyframes slide${i} {
         0%                              { opacity: ${i === 0 ? 1 : 0}; }
         ${Math.max(0, start - fadeIn)}% { opacity: 0; }
@@ -84,7 +83,8 @@ export default function Hero() {
         100%                            { opacity: ${i === 0 ? 1 : 0}; }
       }
     `;
-  }).join("\n");
+    })
+    .join("\n");
 
   return (
     <>
@@ -118,11 +118,10 @@ export default function Hero() {
           minHeight: 480,
           overflow: "hidden",
           background: "#1a1814",
-          touchAction: "pan-y",
+          /* ✅ الإصلاح الرئيسي: pan-y pinch-zoom بدلاً من pan-y فقط */
+          touchAction: "pan-y pinch-zoom",
           userSelect: "none",
-          // ✅ منع التأثير على العناصر الأخرى
-          contain: "layout paint",
-          // ✅ عزل z-index
+          /* ✅ حذف contain: "layout paint" — كان يكسر touch events على iOS */
           isolation: "isolate",
         }}
       >
@@ -187,10 +186,10 @@ export default function Hero() {
             right: 20,
             color: "#fff",
             zIndex: 5,
-            pointerEvents: "auto", // ✅ مهم
+            pointerEvents: "none", // ✅ الـ div نفسه لا يحتاج events، فقط أبناؤه
           }}
         >
-          <div style={{ fontSize: 11, opacity: 0.75, letterSpacing: "0.08em" }}>
+          <div style={{ fontSize: 11, opacity: 0.75, letterSpacing: "0.08em", pointerEvents: "none" }}>
             {slides[isManual ? manualIdx : 0].tag}
           </div>
           <h1
@@ -201,6 +200,7 @@ export default function Hero() {
               margin: "8px 0",
               lineHeight: 1.2,
               color: "#fff",
+              pointerEvents: "none",
             }}
           >
             {slides[isManual ? manualIdx : 0].title}
@@ -210,6 +210,7 @@ export default function Hero() {
               opacity: 0.82,
               fontSize: "clamp(13px, 3.5vw, 15px)",
               lineHeight: 1.6,
+              pointerEvents: "none",
             }}
           >
             {slides[isManual ? manualIdx : 0].desc}
@@ -227,7 +228,9 @@ export default function Hero() {
               fontSize: 13,
               letterSpacing: "0.06em",
               WebkitTapHighlightColor: "transparent",
-              pointerEvents: "auto", // ✅ مهم
+              pointerEvents: "auto", // ✅ الرابط يحتاج events
+              position: "relative",
+              zIndex: 6,
             }}
           >
             {slides[isManual ? manualIdx : 0].btn}
@@ -244,7 +247,7 @@ export default function Hero() {
             justifyContent: "center",
             gap: 8,
             zIndex: 10,
-            pointerEvents: "auto", // ✅ مهم
+            pointerEvents: "none", // ✅ الـ div لا يحتاج events
           }}
         >
           {slides.map((_, i) => (
@@ -266,7 +269,9 @@ export default function Hero() {
                 transition: "width 0.3s",
                 WebkitTapHighlightColor: "transparent",
                 touchAction: "manipulation",
-                pointerEvents: "auto", // ✅ مهم
+                pointerEvents: "auto", // ✅ الأزرار تحتاج events
+                position: "relative",
+                zIndex: 11,
               }}
             />
           ))}

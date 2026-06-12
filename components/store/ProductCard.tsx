@@ -39,13 +39,15 @@ export default function ProductCard({ product }: { product: Product }) {
       }}
     >
       {/* الصورة */}
-      <div style={{ position: "relative", overflow: "hidden" }}>
+      {/* ✅ الإصلاح: overflow: visible بدلاً من hidden حتى لا يقطع touch events على iOS */}
+      {/* زر المفضلة والبادج أصبحا خارج هذا الـ div */}
+      <div style={{ position: "relative" }}>
         <Link href={`/products/${product.slug}`}>
           <div style={{
             width: "100%",
             aspectRatio: "3/4",
             background: "var(--sand)",
-            overflow: "hidden",
+            overflow: "hidden", // ✅ overflow:hidden فقط على الصورة نفسها وليس الحاوية الكاملة
             position: "relative",
           }}>
             {/* Skeleton loader */}
@@ -98,6 +100,8 @@ export default function ProductCard({ product }: { product: Product }) {
             padding: "3px 8px",
             textTransform: "uppercase",
             fontFamily: "var(--font-body)",
+            // ✅ لا يحتاج pointer events
+            pointerEvents: "none",
           }}>
             {product.badge}
           </div>
@@ -105,6 +109,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
         {/* زر المفضلة */}
         <button
+          type="button"
           onClick={() => setWished(!wished)}
           aria-label="أضف للمفضلة"
           style={{
@@ -124,6 +129,10 @@ export default function ProductCard({ product }: { product: Product }) {
             color: wished ? "var(--gold)" : "var(--charcoal)",
             transform: wished ? "scale(1.2)" : "scale(1)",
             transition: "transform 0.2s ease, color 0.2s ease",
+            // ✅ ضروري على الموبايل
+            touchAction: "manipulation",
+            WebkitTapHighlightColor: "transparent",
+            zIndex: 2,
           }}
         >
           {wished ? "♥" : "♡"}
@@ -161,6 +170,7 @@ export default function ProductCard({ product }: { product: Product }) {
           {product.colors.map((color, i) => (
             <button
               key={i}
+              type="button"
               onClick={() => setActiveColor(i)}
               aria-label={color.name}
               title={color.name}
@@ -175,6 +185,9 @@ export default function ProductCard({ product }: { product: Product }) {
                 cursor: "pointer",
                 padding: 0,
                 transition: "all 0.2s ease",
+                // ✅ ضروري على الموبايل
+                touchAction: "manipulation",
+                WebkitTapHighlightColor: "transparent",
               }}
             />
           ))}
