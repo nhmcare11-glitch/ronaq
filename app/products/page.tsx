@@ -5,19 +5,21 @@ import Link from "next/link";
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: { category?: string; sort?: string };
+  searchParams: Promise<{ category?: string; sort?: string }>;
 }) {
+  const { category, sort } = await searchParams;
+
   const categories = await db.category.findMany();
 
   const products = await db.product.findMany({
-    where: searchParams.category
-      ? { category: { slug: searchParams.category } }
+    where: category
+      ? { category: { slug: category } }
       : undefined,
     include: { variants: true, category: true },
     orderBy:
-      searchParams.sort === "price-asc"
+      sort === "price-asc"
         ? { price: "asc" }
-        : searchParams.sort === "price-desc"
+        : sort === "price-desc"
         ? { price: "desc" }
         : { createdAt: "desc" },
   });
@@ -69,8 +71,8 @@ export default async function ProductsPage({
               textDecoration: "none",
               fontFamily: "var(--font-body)",
               flexShrink: 0,
-              background: !searchParams.category ? "var(--charcoal)" : "transparent",
-              color: !searchParams.category ? "var(--ivory)" : "var(--charcoal)",
+              background: !category ? "var(--charcoal)" : "transparent",
+              color: !category ? "var(--ivory)" : "var(--charcoal)",
               border: "0.5px solid var(--border)",
             }}
           >
@@ -89,14 +91,8 @@ export default async function ProductsPage({
                 textDecoration: "none",
                 fontFamily: "var(--font-body)",
                 flexShrink: 0,
-                background:
-                  searchParams.category === cat.slug
-                    ? "var(--charcoal)"
-                    : "transparent",
-                color:
-                  searchParams.category === cat.slug
-                    ? "var(--ivory)"
-                    : "var(--charcoal)",
+                background: category === cat.slug ? "var(--charcoal)" : "transparent",
+                color: category === cat.slug ? "var(--ivory)" : "var(--charcoal)",
                 border: "0.5px solid var(--border)",
               }}
             >
@@ -119,13 +115,13 @@ export default async function ProductsPage({
         </span>
         <div style={{ display: "flex", gap: "8px" }}>
           {[
-            { label: "الأحدث",     value: "newest" },
-            { label: "الأرخص",     value: "price-asc" },
-            { label: "الأغلى",     value: "price-desc" },
+            { label: "الأحدث",    value: "newest" },
+            { label: "الأرخص",    value: "price-asc" },
+            { label: "الأغلى",    value: "price-desc" },
           ].map((s) => (
             <Link
               key={s.value}
-              href={`/products?${searchParams.category ? `category=${searchParams.category}&` : ""}sort=${s.value}`}
+              href={`/products?${category ? `category=${category}&` : ""}sort=${s.value}`}
               style={{
                 fontSize: "10px",
                 letterSpacing: "0.1em",
@@ -134,13 +130,11 @@ export default async function ProductsPage({
                 padding: "5px 10px",
                 fontFamily: "var(--font-body)",
                 background:
-                  (searchParams.sort === s.value ||
-                    (!searchParams.sort && s.value === "newest"))
+                  (sort === s.value || (!sort && s.value === "newest"))
                     ? "var(--charcoal)"
                     : "transparent",
                 color:
-                  (searchParams.sort === s.value ||
-                    (!searchParams.sort && s.value === "newest"))
+                  (sort === s.value || (!sort && s.value === "newest"))
                     ? "var(--ivory)"
                     : "var(--taupe)",
                 border: "0.5px solid var(--border)",
@@ -167,10 +161,10 @@ export default async function ProductsPage({
           </div>
         ) : (
           <div style={{
-  display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
-  gap: "12px",
-}}>
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "12px",
+          }}>
             {products.map((product) => (
               <ProductCard
                 key={product.id}

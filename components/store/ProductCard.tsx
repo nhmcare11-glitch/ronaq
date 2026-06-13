@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useFavorites } from "@/lib/FavoritesContext";
+
 
 type Color = {
   name: string;
@@ -21,10 +23,11 @@ type Product = {
 };
 
 export default function ProductCard({ product }: { product: Product }) {
-  const [wished, setWished] = useState(false);
+ const { toggle, isFav } = useFavorites();
+const wished = isFav(product.id);
   const [activeColor, setActiveColor] = useState(0);
   const [hovered, setHovered] = useState(false);
-  const [imgLoaded, setImgLoaded] = useState(false);
+ const [imgLoaded, setImgLoaded] = useState(true);
 
   const currentImage = product.colors[activeColor]?.image || product.image;
 
@@ -63,6 +66,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 src={currentImage}
                 alt={product.name}
                 onLoad={() => setImgLoaded(true)}
+                onError={() => setImgLoaded(true)}
                 style={{
                   width: "100%",
                   height: "100%",
@@ -110,7 +114,7 @@ export default function ProductCard({ product }: { product: Product }) {
         {/* زر المفضلة */}
         <button
           type="button"
-          onClick={() => setWished(!wished)}
+       onClick={() => toggle(product)}
           aria-label="أضف للمفضلة"
           style={{
             position: "absolute",
