@@ -51,6 +51,23 @@ export default function ProductPageClient({ product }: { product: Product }) {
 
   return (
     <div style={{ background: "var(--ivory)", minHeight: "100vh", paddingBottom: "140px" }}>
+        <div
+      style={{
+        position: "fixed",
+        top: "100px",
+        left: "20px",
+        right: "20px",
+        background: "red",
+        color: "white",
+        padding: "20px",
+        zIndex: 999999,
+        fontSize: "16px",
+      }}
+      onTouchStart={() => alert("يعمل!")}
+      onClick={() => alert("يعمل!")}
+    >
+      اضغط هنا للاختبار
+    </div>
       <div style={{ padding: "14px 20px", borderBottom: "0.5px solid var(--border)" }}>
         <Link href="/products" style={{
           fontSize: "11px", letterSpacing: "0.12em", textTransform: "uppercase",
@@ -134,25 +151,70 @@ export default function ProductPageClient({ product }: { product: Product }) {
         </div>
       </div>
 
-      <div style={{
-        position: "fixed", bottom: 0, left: 0, right: 0,
-        padding: "12px 20px", background: "var(--ivory)",
-        borderTop: "0.5px solid var(--border)", display: "flex", gap: "12px", zIndex: 999,
-      }}>
-        <button onClick={handleWishlist} style={{
-          width: "50px", height: "50px", border: "0.5px solid var(--charcoal)",
-          background: "transparent", fontSize: "20px", cursor: "pointer",
-          color: wished ? "var(--gold)" : "var(--charcoal)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-        }}>
+      {/* زر ثابت في الأسفل */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: "12px 20px",
+          paddingBottom: "calc(12px + env(safe-area-inset-bottom))",
+          background: "var(--ivory)",
+          borderTop: "0.5px solid var(--border)",
+          display: "flex",
+          gap: "12px",
+          zIndex: 99999,
+          pointerEvents: "all",
+          touchAction: "manipulation",
+        }}
+      >
+        <button
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            handleWishlist();
+          }}
+          onClick={handleWishlist}
+          style={{
+            width: "50px",
+            height: "50px",
+            border: "0.5px solid var(--charcoal)",
+            background: "transparent",
+            fontSize: "20px",
+            cursor: "pointer",
+            color: wished ? "var(--gold)" : "var(--charcoal)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            touchAction: "manipulation",
+            WebkitTapHighlightColor: "transparent",
+          }}
+        >
           {wished ? "♥" : "♡"}
         </button>
-        <button onClick={handleAddToCart} style={{
-          flex: 1, height: "50px", background: added ? "var(--gold)" : "var(--charcoal)",
-          color: "var(--ivory)", border: "none", fontSize: "12px",
-          letterSpacing: "0.2em", textTransform: "uppercase",
-          fontFamily: "var(--font-body)", cursor: "pointer", transition: "background 0.3s ease",
-        }}>
+
+        <button
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            handleAddToCart();
+          }}
+          onClick={handleAddToCart}
+          style={{
+            flex: 1,
+            height: "50px",
+            background: added ? "var(--gold)" : "var(--charcoal)",
+            color: "var(--ivory)",
+            border: "none",
+            fontSize: "12px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            fontFamily: "var(--font-body)",
+            cursor: "pointer",
+            transition: "background 0.3s ease",
+            touchAction: "manipulation",
+            WebkitTapHighlightColor: "transparent",
+          }}
+        >
           {added ? "✓ تمت الإضافة" : "أضف للسلة"}
         </button>
       </div>

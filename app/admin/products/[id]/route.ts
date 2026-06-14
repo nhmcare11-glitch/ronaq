@@ -3,11 +3,12 @@ import { db } from "@/lib/db";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
     const product = await db.product.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { variants: true, category: true },
     });
     if (!product) {
@@ -21,8 +22,9 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
     const {
       name, slug, description, price,
@@ -35,7 +37,6 @@ export async function PATCH(
 
     if (!category) {
       const categoryNames: Record<string, string> = {
-        
         wallets:     "محافظ",
         backpacks:   "حقائب ظهر",
         accessories: "إكسسوارات",
@@ -48,16 +49,12 @@ export async function PATCH(
       });
     }
 
-    // حذف الـ variants القديمة وإنشاء جديدة
-    await db.variant.deleteMany({ where: { productId: params.id } });
+    await db.variant.deleteMany({ where: { productId: id } });
 
     const product = await db.product.update({
-      where: { id: params.id },
+      where: { id },
       data: {
-        name,
-        slug,
-        description,
-        price,
+        name, slug, description, price,
         badge: badge || null,
         isFeatured,
         categoryId: category.id,
@@ -86,13 +83,12 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
-    // حذف الـ variants أولاً ثم المنتج
-    await db.variant.deleteMany({ where: { productId: params.id } });
-    await db.product.delete({ where: { id: params.id } });
-
+    await db.variant.deleteMany({ where: { productId: id } });
+    await db.product.delete({ where: { id } });
     return NextResponse.json({ message: "تم حذف المنتج بنجاح" });
   } catch {
     return NextResponse.json({ error: "حدث خطأ" }, { status: 500 });

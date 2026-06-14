@@ -232,7 +232,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div style={{ height: "70px", background: "var(--ivory)" }} />
+      
     </footer>
   );
 }

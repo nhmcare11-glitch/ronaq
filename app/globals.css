@@ -24,7 +24,6 @@
 
 html {
   scroll-behavior: smooth;
-  /* ✅ تأكد من عدم وجود pointer-events: none */
 }
 
 body {
@@ -32,34 +31,25 @@ body {
   background-color: var(--ivory);
   color: var(--charcoal);
   -webkit-font-smoothing: antialiased;
-  /* ✅ لا تضع pointer-events هنا */
 }
 
 h1, h2, h3 {
   font-family: var(--font-display);
-  fontWeight: 300;
+  font-weight: 300;  /* ← صحح هذا */
 }
 
 a:hover { opacity: 0.75; }
 
 button:active { opacity: 0.8; }
 
-/* ✅ إخفاء scrollbar */
 ::-webkit-scrollbar { width: 0; height: 0; }
 
-/* ✅ تأكد أن الأزرار والروابط تعمل */
 button, a, [role="button"], input, select, textarea {
   pointer-events: auto;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ✅ منع أي عنصر من منع اللمس */
-[style*="pointer-events: none"] {
-  /* لا تغير شيئاً هنا */
-}
-
-/* Animations */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
