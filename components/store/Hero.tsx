@@ -200,6 +200,7 @@ export default function Hero() {
               margin: "8px 0",
               lineHeight: 1.2,
               color: "#fff",
+              letterSpacing: "0.02em",
               pointerEvents: "none",
             }}
           >

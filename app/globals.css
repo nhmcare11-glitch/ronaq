@@ -78,3 +78,51 @@ button, a, [role="button"], input, select, textarea {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+/* تأثيرات الأزرار */
+button, a {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+button:active, a:active {
+  transform: scale(0.96);
+  opacity: 0.85;
+}
+
+/* تأثير خاص لأزرار السلة والمفضلة */
+button[style*="background: var(--charcoal)"],
+button[style*="background: var(--gold)"] {
+  transition: transform 0.15s ease, background 0.3s ease !important;
+}
+
+button[style*="background: var(--charcoal)"]:active,
+button[style*="background: var(--gold)"]:active {
+  transform: scale(0.97) !important;
+}
+
+/* تأثير ripple عند الضغط */
+@keyframes ripple {
+  from { transform: scale(0); opacity: 0.4; }
+  to   { transform: scale(2.5); opacity: 0; }
+}
+
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+button::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+}
+
+button:active::after {
+  animation: ripple 0.4s ease forwards;
+}

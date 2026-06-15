@@ -1,12 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import { FiUser, FiShoppingCart, FiHeart, FiSearch } from "react-icons/fi";
+import { useCartStore } from "@/lib/store/cartStore";
 
-export default function Navbar({
-  cartItems = [],
-}: {
-  cartItems?: { id: string }[];
-}) {
-  const cartCount = cartItems.length;
+export default function Navbar() {
+  const totalItems = useCartStore((state) => state.totalItems());
 
   const btnStyle: React.CSSProperties = {
     width: 48, height: 48,
@@ -33,7 +32,7 @@ export default function Navbar({
       <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
         <Link href="/cart" aria-label="السلة" style={{ ...btnStyle, position: "relative" }}>
           <FiShoppingCart size={22} />
-          {cartCount > 0 && (
+          {totalItems > 0 && (
             <span style={{
               position: "absolute", top: 6, right: 6,
               width: 14, height: 14,
@@ -42,7 +41,7 @@ export default function Navbar({
               display: "flex", alignItems: "center", justifyContent: "center",
               fontWeight: 600, border: "1.5px solid var(--ivory)",
             }}>
-              {cartCount > 9 ? "9+" : cartCount}
+              {totalItems > 9 ? "9+" : totalItems}
             </span>
           )}
         </Link>

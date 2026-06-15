@@ -50,24 +50,9 @@ export default function ProductPageClient({ product }: { product: Product }) {
   const currentImage = product.colors[activeColor]?.image || "";
 
   return (
-    <div style={{ background: "var(--ivory)", minHeight: "100vh", paddingBottom: "140px" }}>
-        <div
-      style={{
-        position: "fixed",
-        top: "100px",
-        left: "20px",
-        right: "20px",
-        background: "red",
-        color: "white",
-        padding: "20px",
-        zIndex: 999999,
-        fontSize: "16px",
-      }}
-      onTouchStart={() => alert("يعمل!")}
-      onClick={() => alert("يعمل!")}
-    >
-      اضغط هنا للاختبار
-    </div>
+    <div style={{ background: "var(--ivory)", minHeight: "100vh", paddingBottom: "80px" }}>
+
+      {/* Breadcrumb */}
       <div style={{ padding: "14px 20px", borderBottom: "0.5px solid var(--border)" }}>
         <Link href="/products" style={{
           fontSize: "11px", letterSpacing: "0.12em", textTransform: "uppercase",
@@ -77,33 +62,50 @@ export default function ProductPageClient({ product }: { product: Product }) {
         </Link>
       </div>
 
-      <div style={{ width: "100%", height: "360px", background: "var(--sand)", overflow: "hidden", position: "relative" }}>
+      {/* الصورة الرئيسية */}
+      <div style={{
+        width: "100%", height: "420px", background: "var(--sand)",
+        overflow: "hidden", position: "relative",
+      }}>
         {currentImage ? (
           <img src={currentImage} alt={product.name}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            style={{
+              width: "100%", height: "100%", objectFit: "cover",
+              transition: "opacity 0.4s ease",
+            }} />
         ) : (
-          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "64px" }}>👜</div>
+          <div style={{
+            width: "100%", height: "100%", display: "flex",
+            alignItems: "center", justifyContent: "center", fontSize: "64px",
+          }}>👜</div>
         )}
         {product.badge && (
           <div style={{
             position: "absolute", top: "16px", right: "16px",
             background: "var(--gold)", color: "var(--ivory)",
-            fontSize: "9px", letterSpacing: "0.15em", padding: "4px 10px", textTransform: "uppercase",
+            fontSize: "9px", letterSpacing: "0.15em",
+            padding: "4px 10px", textTransform: "uppercase",
           }}>
             {product.badge}
           </div>
         )}
       </div>
 
-      <div style={{ display: "flex", gap: "8px", padding: "12px 20px", borderBottom: "0.5px solid var(--border)", overflowX: "auto" }}>
+      {/* الصور المصغرة */}
+      <div style={{
+        display: "flex", gap: "8px", padding: "12px 20px",
+        borderBottom: "0.5px solid var(--border)", overflowX: "auto",
+      }}>
         {product.colors.map((color, i) => (
           <button key={i} onClick={() => setActiveColor(i)} style={{
             width: "64px", height: "64px", padding: 0, flexShrink: 0,
             border: i === activeColor ? "2px solid var(--gold)" : "1px solid var(--border)",
             cursor: "pointer", overflow: "hidden", background: "var(--sand)",
+            transition: "border 0.2s ease",
           }}>
             {color.image ? (
-              <img src={color.image} alt={color.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <img src={color.image} alt={color.name}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             ) : (
               <div style={{ width: "100%", height: "100%", background: color.hex }} />
             )}
@@ -111,17 +113,30 @@ export default function ProductPageClient({ product }: { product: Product }) {
         ))}
       </div>
 
+      {/* المعلومات */}
       <div style={{ padding: "20px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
+        <div style={{
+          display: "flex", justifyContent: "space-between",
+          alignItems: "flex-start", marginBottom: "10px",
+        }}>
           <div>
-            <div style={{ fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "5px", fontWeight: 300 }}>
+            <div style={{
+              fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase",
+              color: "var(--gold)", marginBottom: "5px", fontWeight: 300,
+            }}>
               رونق — مجموعة ٢٠٢٥
             </div>
-            <h1 style={{ fontFamily: "var(--font-display)", fontSize: "24px", fontWeight: 400, color: "var(--charcoal)", lineHeight: 1.2 }}>
+            <h1 style={{
+              fontFamily: "var(--font-display)", fontSize: "24px",
+              fontWeight: 400, color: "var(--charcoal)", lineHeight: 1.2,
+            }}>
               {product.name}
             </h1>
           </div>
-          <div style={{ fontFamily: "var(--font-display)", fontSize: "24px", color: "var(--gold)", flexShrink: 0 }}>
+          <div style={{
+            fontFamily: "var(--font-display)", fontSize: "24px",
+            color: "var(--gold)", flexShrink: 0,
+          }}>
             {product.price.toLocaleString()} دج
           </div>
         </div>
@@ -132,87 +147,72 @@ export default function ProductPageClient({ product }: { product: Product }) {
         </div>
 
         <div style={{ marginBottom: "20px" }}>
-          <div style={{ fontSize: "11px", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--taupe)", marginBottom: "10px" }}>
-            اللون — <span style={{ color: "var(--charcoal)", fontWeight: 500 }}>{product.colors[activeColor]?.name}</span>
+          <div style={{
+            fontSize: "11px", letterSpacing: "0.12em", textTransform: "uppercase",
+            color: "var(--taupe)", marginBottom: "10px",
+          }}>
+            اللون — <span style={{ color: "var(--charcoal)", fontWeight: 500 }}>
+              {product.colors[activeColor]?.name}
+            </span>
           </div>
           <div style={{ display: "flex", gap: "10px" }}>
             {product.colors.map((color, i) => (
               <button key={i} onClick={() => setActiveColor(i)} title={color.name} style={{
-                width: "28px", height: "28px", borderRadius: "50%", background: color.hex, padding: 0,
+                width: "28px", height: "28px", borderRadius: "50%",
+                background: color.hex, padding: 0,
                 border: i === activeColor ? "2.5px solid var(--gold)" : "1px solid var(--border)",
-                cursor: "pointer", transition: "border 0.2s ease",
+                cursor: "pointer", transition: "all 0.2s ease",
               }} />
             ))}
           </div>
         </div>
 
-        <div style={{ fontSize: "13px", color: "var(--taupe)", lineHeight: 1.9, fontWeight: 300, borderTop: "0.5px solid var(--border)", paddingTop: "16px", marginBottom: "16px" }}>
+        <div style={{
+          fontSize: "13px", color: "var(--taupe)", lineHeight: 1.9,
+          fontWeight: 300, borderTop: "0.5px solid var(--border)",
+          paddingTop: "16px", marginBottom: "16px",
+        }}>
           {product.description}
         </div>
       </div>
 
       {/* زر ثابت في الأسفل */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: "12px 20px",
-          paddingBottom: "calc(12px + env(safe-area-inset-bottom))",
-          background: "var(--ivory)",
-          borderTop: "0.5px solid var(--border)",
-          display: "flex",
-          gap: "12px",
-          zIndex: 99999,
-          pointerEvents: "all",
-          touchAction: "manipulation",
-        }}
-      >
+      <div style={{
+        position: "fixed", bottom: 0, left: 0, right: 0,
+        padding: "12px 20px",
+        paddingBottom: "calc(12px + env(safe-area-inset-bottom))",
+        background: "var(--ivory)",
+        borderTop: "0.5px solid var(--border)",
+        display: "flex", gap: "12px",
+        zIndex: 99999,
+      }}>
         <button
-          onTouchEnd={(e) => {
-            e.preventDefault();
-            handleWishlist();
-          }}
+          onTouchEnd={(e) => { e.preventDefault(); handleWishlist(); }}
           onClick={handleWishlist}
           style={{
-            width: "50px",
-            height: "50px",
+            width: "50px", height: "50px",
             border: "0.5px solid var(--charcoal)",
-            background: "transparent",
-            fontSize: "20px",
-            cursor: "pointer",
+            background: "transparent", fontSize: "20px", cursor: "pointer",
             color: wished ? "var(--gold)" : "var(--charcoal)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            touchAction: "manipulation",
-            WebkitTapHighlightColor: "transparent",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            touchAction: "manipulation", WebkitTapHighlightColor: "transparent",
+            transition: "color 0.2s ease",
           }}
         >
           {wished ? "♥" : "♡"}
         </button>
 
         <button
-          onTouchEnd={(e) => {
-            e.preventDefault();
-            handleAddToCart();
-          }}
+          onTouchEnd={(e) => { e.preventDefault(); handleAddToCart(); }}
           onClick={handleAddToCart}
           style={{
-            flex: 1,
-            height: "50px",
+            flex: 1, height: "50px",
             background: added ? "var(--gold)" : "var(--charcoal)",
-            color: "var(--ivory)",
-            border: "none",
-            fontSize: "12px",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            fontFamily: "var(--font-body)",
-            cursor: "pointer",
+            color: "var(--ivory)", border: "none",
+            fontSize: "12px", letterSpacing: "0.2em", textTransform: "uppercase",
+            fontFamily: "var(--font-body)", cursor: "pointer",
             transition: "background 0.3s ease",
-            touchAction: "manipulation",
-            WebkitTapHighlightColor: "transparent",
+            touchAction: "manipulation", WebkitTapHighlightColor: "transparent",
           }}
         >
           {added ? "✓ تمت الإضافة" : "أضف للسلة"}

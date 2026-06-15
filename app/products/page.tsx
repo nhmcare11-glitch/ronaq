@@ -25,7 +25,7 @@ export default async function ProductsPage({
   });
 
   return (
-    <div style={{ background: "var(--ivory)", minHeight: "100vh", paddingBottom: "80px" }}>
+    <div style={{ background: "var(--ivory)", minHeight: "120vh", paddingBottom: "80px" }}>
 
       {/* الهيدر */}
       <div style={{
