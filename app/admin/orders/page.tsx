@@ -4,7 +4,15 @@ import OrderStatusUpdater from "./OrderStatusUpdater";
 export default async function OrdersPage() {
   const orders = await db.order.findMany({
     orderBy: { createdAt: "desc" },
-    include: { items: { include: { product: true } } },
+   include: { 
+  items: { 
+    include: { 
+      product: { 
+        include: { variants: true } 
+      } 
+    } 
+  } 
+},
   });
 
   return (
@@ -122,7 +130,7 @@ export default async function OrdersPage() {
                         flexShrink: 0,
                       }}>
                         <img
-                          src={item.image}
+                         src={item.product.variants?.[0]?.image ?? ""}
                           alt={item.product.name}
                           style={{ width: "100%", height: "100%", objectFit: "cover" }}
                         />

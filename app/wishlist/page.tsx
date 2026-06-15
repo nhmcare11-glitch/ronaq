@@ -73,7 +73,12 @@ export default function WishlistPage() {
 
               <div style={{ display: "flex", gap: "10px" }}>
                 <button onClick={() => {
-                  addToCart({ ...item, quantity: 1 });
+                addToCart({ 
+  ...item, 
+  quantity: 1,
+  color: "",
+  colorHex: "",
+});
                 }} style={{
                   flex: 1, padding: "8px", background: "var(--charcoal)",
                   color: "var(--ivory)", border: "none", fontSize: "10px",

@@ -1,14 +1,24 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const { searchParams } = new URL(req.url);
+    const search = searchParams.get("search") ?? "";
+
     const products = await db.product.findMany({
+      where: search ? {
+        OR: [
+          { name: { contains: search, mode: "insensitive" } },
+          { description: { contains: search, mode: "insensitive" } },
+        ],
+      } : undefined,
       include: { variants: true, category: true },
       orderBy: { createdAt: "desc" },
     });
+
     return NextResponse.json(products);
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: "حدث خطأ" }, { status: 500 });
   }
 }
@@ -26,7 +36,6 @@ export async function POST(req: Request) {
 
     if (!category) {
       const categoryNames: Record<string, string> = {
-       
         wallets:     "محافظ",
         backpacks:   "حقائب ظهر",
         accessories: "إكسسوارات",
@@ -70,7 +79,6 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-    console.error(error);
     return NextResponse.json({ error: "حدث خطأ" }, { status: 500 });
   }
 }
