@@ -1,5 +1,5 @@
 export default function MarqueeStrip() {
-  const text = "شحن مجاني للطلبات فوق ٥٠٠٠ دج &nbsp;✦&nbsp; جلد طبيعي أصيل &nbsp;✦&nbsp; ضمان الجودة &nbsp;✦&nbsp; &nbsp;✦&nbsp; مجموعات حصرية &nbsp;✦&nbsp;";
+  const text = "&nbsp;✦&nbsp; جلد طبيعي أصيل &nbsp;✦&nbsp; ضمان الجودة &nbsp;✦&nbsp; &nbsp;✦&nbsp; مجموعات حصرية &nbsp;✦&nbsp;";
 
   return (
     <div style={{
