@@ -1,4 +1,5 @@
-import { db } from "@/lib/db";
+ export const dynamic = "force-dynamic";
+ import { db } from "@/lib/db";
 import ProductCard from "@/components/store/ProductCard";
 import Link from "next/link";
 
