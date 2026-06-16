@@ -38,7 +38,9 @@ export default function SearchPage() {
   }, [query]);
 
   return (
-    <div style={{ background: "var(--ivory)", minHeight: "100vh", padding: "24px 20px" }}>
+    <div style={{ background: "var(--ivory)", minHeight: "100vh", padding: "24px 20px",paddingTop: "56px",
+
+     }}>
       <h1 style={{
         fontFamily: "var(--font-display)", fontSize: "26px",
         fontWeight: 400, color: "var(--charcoal)", marginBottom: "20px",

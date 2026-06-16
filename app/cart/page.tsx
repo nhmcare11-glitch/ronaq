@@ -186,7 +186,8 @@ if (!isHydrated) {
   }
 
   return (
-    <div style={{ background: "var(--ivory)", minHeight: "100vh", paddingBottom: "160px" }}>
+    <div style={{ background: "var(--ivory)", minHeight: "100vh", paddingBottom: "160px", paddingTop: "56px"}}>
+
 
       {/* الهيدر */}
       <AnimateIn delay={0}>

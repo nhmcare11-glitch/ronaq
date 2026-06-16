@@ -124,7 +124,9 @@ export default function AccountPage() {
     );
 
   return (
-    <div style={{ maxWidth: 420, margin: "0 auto", padding: "32px 20px" }}>
+    <div style={{ maxWidth: 420, margin: "0 auto", padding: "32px 20px",paddingTop: "56px",
+
+     }}>
       <h1 style={{
         fontSize: "16px", fontWeight: 600, color: "var(--charcoal)",
         marginBottom: "24px", letterSpacing: "0.05em", textAlign: "right",

@@ -70,6 +70,7 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "ronaq-cart",   // ← اسم المفتاح في localStorage
+      skipHydration: true,
     }
   )
 );
