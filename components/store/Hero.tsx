@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -11,7 +10,7 @@ const slides = [
     tag: "✦ مجموعة صيف ٢٠٢٥",
     title: "الأناقة في كل تفصيلة",
     desc: "حقائب نسائية تجمع بين الاناقة و الرقي.",
-    btn: "اكتشفي",
+    btn:"تسوقي الان",
     link: "/products",
   },
   {
@@ -38,12 +37,9 @@ const DURATION = 2.5;
 const TOTAL = slides.length;
 
 const pearls = [
-  { size: 4, delay: "0s",   duration: "2.2s" },
-  { size: 3, delay: "0.4s", duration: "2.6s" },
-  { size: 5, delay: "0.2s", duration: "2s"   },
-  { size: 3, delay: "0.7s", duration: "2.4s" },
-  { size: 4, delay: "0.1s", duration: "2.8s" },
-  { size: 3, delay: "0.5s", duration: "2.1s" },
+  { size: 7, delay: "0s",   duration: "2.2s" },
+  { size: 9, delay: "0.35s", duration: "2.6s" },
+  { size: 7, delay: "0.7s", duration: "2s"   },
 ];
 
 export default function Hero() {
@@ -345,30 +341,30 @@ export default function Hero() {
             {currentSlide.desc}
           </p>
 
-          {/* الزر — مع الفقاعات بداخله */}
-          <div className="hero-btn-wrap" style={{ opacity: 0, pointerEvents: "auto" }}>
+          {/* الزر */}
+          <div className="hero-btn-wrap" style={{ opacity: 0, pointerEvents: "auto", display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
             <Link href={currentSlide.link} className="hero-btn">
-              {/* الفقاعات داخل الزر */}
-              <span className="btn-pearls">
-                {pearls.map((p, i) => (
-                  <span
-                    key={i}
-                    className="pearl"
-                    style={{
-                      display: "inline-block",
-                      width: p.size,
-                      height: p.size,
-                      // @ts-ignore
-                      "--dur": p.duration,
-                      "--delay": p.delay,
-                    }}
-                  />
-                ))}
-              </span>
-
               {currentSlide.btn}
               <span className="hero-btn-arrow">←</span>
             </Link>
+
+            {/* الفقاعات تحت الزر */}
+            <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+              {pearls.map((p, i) => (
+                <span
+                  key={i}
+                  className="pearl"
+                  style={{
+                    display: "inline-block",
+                    width: p.size,
+                    height: p.size,
+                    // @ts-ignore
+                    "--dur": p.duration,
+                    "--delay": p.delay,
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
