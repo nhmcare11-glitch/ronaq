@@ -77,7 +77,7 @@ export default function Footer() {
                 <div style={{ color: "var(--gold)", marginBottom: "14px" }}>تسوقي</div>
                 {[
                   { label: "جميع المنتجات", href: "/products" },
-                  { label: "محافظ", href: "/categories/wallets" },
+                 
                   { label: "العروض", href: "/sale" },
                 ].map((item) => (
                   <Link key={item.href} href={item.href} style={{
