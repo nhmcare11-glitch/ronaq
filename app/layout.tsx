@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+export const dynamic = "force-dynamic";
 
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
