@@ -38,12 +38,12 @@ const DURATION = 2.5;
 const TOTAL = slides.length;
 
 const pearls = [
-  { size: 5, left: "10%", delay: "0s",   duration: "2.2s" },
-  { size: 4, left: "25%", delay: "0.4s", duration: "2.6s" },
-  { size: 6, left: "42%", delay: "0.2s", duration: "2s"   },
-  { size: 4, left: "58%", delay: "0.7s", duration: "2.4s" },
-  { size: 5, left: "74%", delay: "0.1s", duration: "2.8s" },
-  { size: 3, left: "88%", delay: "0.5s", duration: "2.1s" },
+  { size: 4, delay: "0s",   duration: "2.2s" },
+  { size: 3, delay: "0.4s", duration: "2.6s" },
+  { size: 5, delay: "0.2s", duration: "2s"   },
+  { size: 3, delay: "0.7s", duration: "2.4s" },
+  { size: 4, delay: "0.1s", duration: "2.8s" },
+  { size: 3, delay: "0.5s", duration: "2.1s" },
 ];
 
 export default function Hero() {
@@ -112,13 +112,13 @@ export default function Hero() {
 
         @keyframes pearlFloat {
           0%   { transform: translateY(0px) scale(1);    opacity: 0.9; }
-          50%  { transform: translateY(-10px) scale(1.1); opacity: 1;   }
+          50%  { transform: translateY(-5px) scale(1.1); opacity: 1;   }
           100% { transform: translateY(0px) scale(1);    opacity: 0.9; }
         }
 
         @keyframes pearlGlow {
           0%   { box-shadow: 0 0 4px 1px rgba(255,255,255,0.5), inset 0 1px 2px rgba(255,255,255,0.8); }
-          50%  { box-shadow: 0 0 10px 3px rgba(212,175,100,0.6), inset 0 1px 3px rgba(255,255,255,0.9); }
+          50%  { box-shadow: 0 0 8px 2px rgba(212,175,100,0.7), inset 0 1px 3px rgba(255,255,255,0.9); }
           100% { box-shadow: 0 0 4px 1px rgba(255,255,255,0.5), inset 0 1px 2px rgba(255,255,255,0.8); }
         }
 
@@ -134,12 +134,8 @@ export default function Hero() {
           animation: heroFadeUp 0.6s ease 0.4s forwards;
           opacity: 0;
         }
-        .hero-content-anim .hero-pearls {
-          animation: heroFadeUp 0.6s ease 0.5s forwards;
-          opacity: 0;
-        }
         .hero-content-anim .hero-btn-wrap {
-          animation: heroFadeUp 0.6s ease 0.65s forwards;
+          animation: heroFadeUp 0.6s ease 0.55s forwards;
           opacity: 0;
         }
 
@@ -149,13 +145,14 @@ export default function Hero() {
           box-shadow: 0 0 4px 1px rgba(255,255,255,0.5), inset 0 1px 2px rgba(255,255,255,0.8);
           animation: pearlFloat var(--dur) ease-in-out var(--delay) infinite,
                      pearlGlow var(--dur) ease-in-out var(--delay) infinite;
+          flex-shrink: 0;
         }
 
         .hero-btn {
           display: inline-flex;
           align-items: center;
           gap: 10px;
-          padding: 15px 40px;
+          padding: 13px 36px;
           background: transparent;
           color: #fff;
           border: 1px solid rgba(255,255,255,0.6);
@@ -198,6 +195,14 @@ export default function Hero() {
         .hero-btn:hover .hero-btn-arrow {
           transform: translateX(-5px);
           opacity: 1;
+        }
+
+        /* Pearls inside button */
+        .btn-pearls {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          margin-right: 4px;
         }
       `}</style>
 
@@ -266,7 +271,7 @@ export default function Hero() {
           }}
         />
 
-        {/* المحتوى — في المنتصف */}
+        {/* المحتوى */}
         <div
           key={`${isManual}-${manualIdx}`}
           className="hero-content-anim"
@@ -285,7 +290,7 @@ export default function Hero() {
             pointerEvents: "none",
           }}
         >
-          {/* التاج — أبيض واضح مع shadow */}
+          {/* التاج — نزّلناه شوي بـ marginTop */}
           <div
             className="hero-tag"
             style={{
@@ -295,6 +300,7 @@ export default function Hero() {
               color: "#ffffff",
               textShadow: "0 1px 8px rgba(0,0,0,0.8)",
               marginBottom: 14,
+              marginTop: "3vh", /* ← نزل شوي للأسفل */
               fontWeight: 400,
               background: "rgba(212,175,100,0.18)",
               border: "0.5px solid rgba(212,175,100,0.4)",
@@ -339,39 +345,27 @@ export default function Hero() {
             {currentSlide.desc}
           </p>
 
-          {/* اللؤلؤات المتحركة */}
-          <div
-            className="hero-pearls"
-            style={{
-              opacity: 0,
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "center",
-              gap: 10,
-              marginBottom: 14,
-              height: 28,
-            }}
-          >
-            {pearls.map((p, i) => (
-              <div
-                key={i}
-                className="pearl"
-                style={{
-                  width: p.size,
-                  height: p.size,
-                  flexShrink: 0,
-                  // @ts-ignore
-                  "--dur": p.duration,
-                  "--delay": p.delay,
-                  alignSelf: i % 2 === 0 ? "flex-start" : "flex-end",
-                }}
-              />
-            ))}
-          </div>
-
-          {/* الزر */}
+          {/* الزر — مع الفقاعات بداخله */}
           <div className="hero-btn-wrap" style={{ opacity: 0, pointerEvents: "auto" }}>
             <Link href={currentSlide.link} className="hero-btn">
+              {/* الفقاعات داخل الزر */}
+              <span className="btn-pearls">
+                {pearls.map((p, i) => (
+                  <span
+                    key={i}
+                    className="pearl"
+                    style={{
+                      display: "inline-block",
+                      width: p.size,
+                      height: p.size,
+                      // @ts-ignore
+                      "--dur": p.duration,
+                      "--delay": p.delay,
+                    }}
+                  />
+                ))}
+              </span>
+
               {currentSlide.btn}
               <span className="hero-btn-arrow">←</span>
             </Link>
