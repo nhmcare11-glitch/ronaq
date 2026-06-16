@@ -33,13 +33,13 @@ const slides = [
   },
 ];
 
-const DURATION = 4;
+const DURATION = 2.5;
 const TOTAL = slides.length;
 
 export default function Hero() {
-  const [offset, setOffset] = useState(0);
   const [manualIdx, setManualIdx] = useState(0);
   const [isManual, setIsManual] = useState(false);
+  const [hoveredBtn, setHoveredBtn] = useState(false);
   const touchX = useRef(0);
   const touchY = useRef(0);
 
@@ -56,10 +56,8 @@ export default function Hero() {
   function handleTouchEnd(e: React.TouchEvent) {
     const dx = touchX.current - e.changedTouches[0].clientX;
     const dy = touchY.current - e.changedTouches[0].clientY;
-
     if (Math.abs(dy) > Math.abs(dx)) return;
     if (Math.abs(dx) < 40) return;
-
     const next =
       dx > 0
         ? (manualIdx + 1) % TOTAL
@@ -71,8 +69,8 @@ export default function Hero() {
     .map((_, i) => {
       const start = (i / TOTAL) * 100;
       const show = (1 / TOTAL) * 100;
-      const fadeIn = 2;
-      const fadeOut = 2;
+      const fadeIn = 1.5;
+      const fadeOut = 1.5;
       return `
       @keyframes slide${i} {
         0%                              { opacity: ${i === 0 ? 1 : 0}; }
@@ -86,25 +84,85 @@ export default function Hero() {
     })
     .join("\n");
 
+  const currentSlide = slides[isManual ? manualIdx : 0];
+
   return (
     <>
       <style>{`
         ${autoKeyframes}
 
         @keyframes heroFadeUp {
-          from { opacity: 0; transform: translateY(18px); }
+          from { opacity: 0; transform: translateY(22px); }
           to   { opacity: 1; transform: translateY(0); }
         }
 
-        .hero-auto-img {
-          animation: var(--anim) ${TOTAL * DURATION}s linear infinite;
+        @keyframes tagFadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
 
-        .hero-root * {
-          transition: none !important;
+        .hero-content-anim .hero-tag {
+          animation: tagFadeIn 0.5s ease 0.1s forwards;
+          opacity: 0;
         }
-        .hero-content-anim {
-          animation: heroFadeUp 0.6s ease forwards;
+        .hero-content-anim .hero-title {
+          animation: heroFadeUp 0.6s ease 0.25s forwards;
+          opacity: 0;
+        }
+        .hero-content-anim .hero-desc {
+          animation: heroFadeUp 0.6s ease 0.4s forwards;
+          opacity: 0;
+        }
+        .hero-content-anim .hero-btn-wrap {
+          animation: heroFadeUp 0.6s ease 0.55s forwards;
+          opacity: 0;
+        }
+
+        .hero-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 14px 36px;
+          background: transparent;
+          color: #fff;
+          border: 1px solid rgba(255,255,255,0.7);
+          text-decoration: none;
+          font-size: 12px;
+          letter-spacing: 0.25em;
+          text-transform: uppercase;
+          font-family: var(--font-body);
+          transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .hero-btn::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: rgba(212, 175, 100, 0.15);
+          transform: scaleX(0);
+          transform-origin: right;
+          transition: transform 0.4s ease;
+        }
+
+        .hero-btn:hover::before {
+          transform: scaleX(1);
+          transform-origin: left;
+        }
+
+        .hero-btn:hover {
+          border-color: rgba(212, 175, 100, 0.9);
+          color: #d4af64;
+        }
+
+        .hero-btn-arrow {
+          transition: transform 0.3s ease;
+          font-size: 14px;
+        }
+
+        .hero-btn:hover .hero-btn-arrow {
+          transform: translateX(-4px);
         }
       `}</style>
 
@@ -118,10 +176,8 @@ export default function Hero() {
           minHeight: 480,
           overflow: "hidden",
           background: "#1a1814",
-          /* ✅ الإصلاح الرئيسي: pan-y pinch-zoom بدلاً من pan-y فقط */
           touchAction: "pan-y pinch-zoom",
           userSelect: "none",
-          /* ✅ حذف contain: "layout paint" — كان يكسر touch events على iOS */
           isolation: "isolate",
         }}
       >
@@ -163,79 +219,91 @@ export default function Hero() {
           />
         ))}
 
-        {/* Overlay */}
+        {/* Overlay متدرج من الأسفل والأعلى */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.15) 60%)",
+              "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.4) 100%)",
             pointerEvents: "none",
             zIndex: 2,
           }}
         />
 
-        {/* النص */}
+        {/* المحتوى — في المنتصف تماماً */}
         <div
           key={`${isManual}-${manualIdx}`}
           className="hero-content-anim"
           style={{
             position: "absolute",
-            bottom: 72,
-            left: 20,
-            right: 20,
+            inset: 0,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
             color: "#fff",
             zIndex: 5,
-            pointerEvents: "none", // ✅ الـ div نفسه لا يحتاج events، فقط أبناؤه
+            padding: "0 24px",
+            paddingBottom: "60px",
+            pointerEvents: "none",
           }}
         >
-          <div style={{ fontSize: 11, opacity: 0.75, letterSpacing: "0.08em", pointerEvents: "none" }}>
-            {slides[isManual ? manualIdx : 0].tag}
+          {/* التاج */}
+          <div
+            className="hero-tag"
+            style={{
+              fontSize: 11,
+              opacity: 0,
+              letterSpacing: "0.15em",
+              color: "rgba(212,175,100,0.9)",
+              marginBottom: 14,
+              fontWeight: 300,
+            }}
+          >
+            {currentSlide.tag}
           </div>
+
+          {/* العنوان */}
           <h1
+            className="hero-title"
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(28px, 7vw, 44px)",
+              fontSize: "clamp(34px, 9vw, 58px)",
               fontWeight: 300,
-              margin: "8px 0",
+              margin: "0 0 14px",
               lineHeight: 1.2,
               color: "#fff",
               letterSpacing: "0.02em",
-              pointerEvents: "none",
+              opacity: 0,
             }}
           >
-            {slides[isManual ? manualIdx : 0].title}
+            {currentSlide.title}
           </h1>
+
+          {/* الوصف */}
           <p
+            className="hero-desc"
             style={{
-              opacity: 0.82,
-              fontSize: "clamp(13px, 3.5vw, 15px)",
-              lineHeight: 1.6,
-              pointerEvents: "none",
+              opacity: 0,
+              fontSize: "clamp(13px, 3.5vw, 16px)",
+              lineHeight: 1.7,
+              color: "rgba(255,255,255,0.8)",
+              maxWidth: 320,
+              marginBottom: 32,
             }}
           >
-            {slides[isManual ? manualIdx : 0].desc}
+            {currentSlide.desc}
           </p>
-          <Link
-            href={slides[isManual ? manualIdx : 0].link}
-            style={{
-              display: "inline-block",
-              marginTop: 16,
-              background: "#fff",
-              color: "#000",
-              padding: "11px 22px",
-              textDecoration: "none",
-              fontWeight: 500,
-              fontSize: 13,
-              letterSpacing: "0.06em",
-              WebkitTapHighlightColor: "transparent",
-              pointerEvents: "auto", // ✅ الرابط يحتاج events
-              position: "relative",
-              zIndex: 6,
-            }}
-          >
-            {slides[isManual ? manualIdx : 0].btn}
-          </Link>
+
+          {/* الزر */}
+          <div className="hero-btn-wrap" style={{ opacity: 0, pointerEvents: "auto" }}>
+            <Link href={currentSlide.link} className="hero-btn">
+              {currentSlide.btn}
+              <span className="hero-btn-arrow">←</span>
+            </Link>
+          </div>
         </div>
 
         {/* Dots */}
@@ -248,7 +316,6 @@ export default function Hero() {
             justifyContent: "center",
             gap: 8,
             zIndex: 10,
-            pointerEvents: "none", // ✅ الـ div لا يحتاج events
           }}
         >
           {slides.map((_, i) => (
@@ -257,22 +324,19 @@ export default function Hero() {
               onClick={() => goTo(i)}
               type="button"
               style={{
-                width: isManual && i === manualIdx ? 20 : 8,
+                width: isManual && i === manualIdx ? 24 : 8,
                 height: 8,
                 borderRadius: 10,
                 background:
                   isManual && i === manualIdx
-                    ? "#fff"
-                    : "rgba(255,255,255,0.45)",
+                    ? "rgba(212,175,100,0.9)"
+                    : "rgba(255,255,255,0.4)",
                 border: "none",
                 padding: 0,
                 cursor: "pointer",
-                transition: "width 0.3s",
+                transition: "width 0.3s, background 0.3s",
                 WebkitTapHighlightColor: "transparent",
                 touchAction: "manipulation",
-                pointerEvents: "auto", // ✅ الأزرار تحتاج events
-                position: "relative",
-                zIndex: 11,
               }}
             />
           ))}
