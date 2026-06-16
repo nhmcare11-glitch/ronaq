@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -36,10 +37,18 @@ const slides = [
 const DURATION = 2.5;
 const TOTAL = slides.length;
 
+const pearls = [
+  { size: 5, left: "10%", delay: "0s",   duration: "2.2s" },
+  { size: 4, left: "25%", delay: "0.4s", duration: "2.6s" },
+  { size: 6, left: "42%", delay: "0.2s", duration: "2s"   },
+  { size: 4, left: "58%", delay: "0.7s", duration: "2.4s" },
+  { size: 5, left: "74%", delay: "0.1s", duration: "2.8s" },
+  { size: 3, left: "88%", delay: "0.5s", duration: "2.1s" },
+];
+
 export default function Hero() {
   const [manualIdx, setManualIdx] = useState(0);
   const [isManual, setIsManual] = useState(false);
-  const [hoveredBtn, setHoveredBtn] = useState(false);
   const touchX = useRef(0);
   const touchY = useRef(0);
 
@@ -101,6 +110,18 @@ export default function Hero() {
           to   { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes pearlFloat {
+          0%   { transform: translateY(0px) scale(1);    opacity: 0.9; }
+          50%  { transform: translateY(-10px) scale(1.1); opacity: 1;   }
+          100% { transform: translateY(0px) scale(1);    opacity: 0.9; }
+        }
+
+        @keyframes pearlGlow {
+          0%   { box-shadow: 0 0 4px 1px rgba(255,255,255,0.5), inset 0 1px 2px rgba(255,255,255,0.8); }
+          50%  { box-shadow: 0 0 10px 3px rgba(212,175,100,0.6), inset 0 1px 3px rgba(255,255,255,0.9); }
+          100% { box-shadow: 0 0 4px 1px rgba(255,255,255,0.5), inset 0 1px 2px rgba(255,255,255,0.8); }
+        }
+
         .hero-content-anim .hero-tag {
           animation: tagFadeIn 0.5s ease 0.1s forwards;
           opacity: 0;
@@ -113,25 +134,37 @@ export default function Hero() {
           animation: heroFadeUp 0.6s ease 0.4s forwards;
           opacity: 0;
         }
-        .hero-content-anim .hero-btn-wrap {
-          animation: heroFadeUp 0.6s ease 0.55s forwards;
+        .hero-content-anim .hero-pearls {
+          animation: heroFadeUp 0.6s ease 0.5s forwards;
           opacity: 0;
+        }
+        .hero-content-anim .hero-btn-wrap {
+          animation: heroFadeUp 0.6s ease 0.65s forwards;
+          opacity: 0;
+        }
+
+        .pearl {
+          border-radius: 50%;
+          background: radial-gradient(circle at 35% 35%, #ffffff, #d4af64 60%, #a0834a);
+          box-shadow: 0 0 4px 1px rgba(255,255,255,0.5), inset 0 1px 2px rgba(255,255,255,0.8);
+          animation: pearlFloat var(--dur) ease-in-out var(--delay) infinite,
+                     pearlGlow var(--dur) ease-in-out var(--delay) infinite;
         }
 
         .hero-btn {
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          padding: 14px 36px;
+          gap: 10px;
+          padding: 15px 40px;
           background: transparent;
           color: #fff;
-          border: 1px solid rgba(255,255,255,0.7);
+          border: 1px solid rgba(255,255,255,0.6);
           text-decoration: none;
           font-size: 12px;
           letter-spacing: 0.25em;
           text-transform: uppercase;
           font-family: var(--font-body);
-          transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+          transition: border-color 0.3s ease, color 0.3s ease;
           position: relative;
           overflow: hidden;
         }
@@ -140,7 +173,7 @@ export default function Hero() {
           content: '';
           position: absolute;
           inset: 0;
-          background: rgba(212, 175, 100, 0.15);
+          background: linear-gradient(135deg, rgba(212,175,100,0.2), rgba(212,175,100,0.05));
           transform: scaleX(0);
           transform-origin: right;
           transition: transform 0.4s ease;
@@ -152,17 +185,19 @@ export default function Hero() {
         }
 
         .hero-btn:hover {
-          border-color: rgba(212, 175, 100, 0.9);
+          border-color: rgba(212,175,100,0.9);
           color: #d4af64;
         }
 
         .hero-btn-arrow {
           transition: transform 0.3s ease;
-          font-size: 14px;
+          font-size: 15px;
+          opacity: 0.8;
         }
 
         .hero-btn:hover .hero-btn-arrow {
-          transform: translateX(-4px);
+          transform: translateX(-5px);
+          opacity: 1;
         }
       `}</style>
 
@@ -219,19 +254,19 @@ export default function Hero() {
           />
         ))}
 
-        {/* Overlay متدرج من الأسفل والأعلى */}
+        {/* Overlay */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.4) 100%)",
+              "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.18) 55%, rgba(0,0,0,0.38) 100%)",
             pointerEvents: "none",
             zIndex: 2,
           }}
         />
 
-        {/* المحتوى — في المنتصف تماماً */}
+        {/* المحتوى — في المنتصف */}
         <div
           key={`${isManual}-${manualIdx}`}
           className="hero-content-anim"
@@ -250,16 +285,21 @@ export default function Hero() {
             pointerEvents: "none",
           }}
         >
-          {/* التاج */}
+          {/* التاج — أبيض واضح مع shadow */}
           <div
             className="hero-tag"
             style={{
-              fontSize: 11,
+              fontSize: 12,
               opacity: 0,
-              letterSpacing: "0.15em",
-              color: "rgba(212,175,100,0.9)",
+              letterSpacing: "0.2em",
+              color: "#ffffff",
+              textShadow: "0 1px 8px rgba(0,0,0,0.8)",
               marginBottom: 14,
-              fontWeight: 300,
+              fontWeight: 400,
+              background: "rgba(212,175,100,0.18)",
+              border: "0.5px solid rgba(212,175,100,0.4)",
+              padding: "5px 16px",
+              backdropFilter: "blur(4px)",
             }}
           >
             {currentSlide.tag}
@@ -276,6 +316,7 @@ export default function Hero() {
               lineHeight: 1.2,
               color: "#fff",
               letterSpacing: "0.02em",
+              textShadow: "0 2px 20px rgba(0,0,0,0.5)",
               opacity: 0,
             }}
           >
@@ -289,13 +330,44 @@ export default function Hero() {
               opacity: 0,
               fontSize: "clamp(13px, 3.5vw, 16px)",
               lineHeight: 1.7,
-              color: "rgba(255,255,255,0.8)",
-              maxWidth: 320,
-              marginBottom: 32,
+              color: "rgba(255,255,255,0.85)",
+              maxWidth: 300,
+              marginBottom: 28,
+              textShadow: "0 1px 6px rgba(0,0,0,0.5)",
             }}
           >
             {currentSlide.desc}
           </p>
+
+          {/* اللؤلؤات المتحركة */}
+          <div
+            className="hero-pearls"
+            style={{
+              opacity: 0,
+              display: "flex",
+              alignItems: "flex-end",
+              justifyContent: "center",
+              gap: 10,
+              marginBottom: 14,
+              height: 28,
+            }}
+          >
+            {pearls.map((p, i) => (
+              <div
+                key={i}
+                className="pearl"
+                style={{
+                  width: p.size,
+                  height: p.size,
+                  flexShrink: 0,
+                  // @ts-ignore
+                  "--dur": p.duration,
+                  "--delay": p.delay,
+                  alignSelf: i % 2 === 0 ? "flex-start" : "flex-end",
+                }}
+              />
+            ))}
+          </div>
 
           {/* الزر */}
           <div className="hero-btn-wrap" style={{ opacity: 0, pointerEvents: "auto" }}>
