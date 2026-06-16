@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <FavoritesProvider>
            <Navbar /> 
-          <main style={{ paddingBottom: "80px" }}>{children}</main>
+         <main style={{ paddingTop: "56px", paddingBottom: "80px" }}>{children}</main>
           <Footer />
         </FavoritesProvider>
       </body>

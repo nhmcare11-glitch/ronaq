@@ -60,7 +60,15 @@ const features: { title: string; icon: React.ReactNode }[] = [
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, totalPrice } = useCartStore();
+const [isHydrated, setIsHydrated] = useState(false);
 
+useEffect(() => {
+  setIsHydrated(true);
+}, []);
+
+if (!isHydrated) {
+  return <div style={{ background: "var(--ivory)", minHeight: "100vh" }} />;
+}
   if (items.length === 0) {
     return (
       <div style={{ background: "var(--ivory)", minHeight: "100vh", direction: "rtl" }}>
