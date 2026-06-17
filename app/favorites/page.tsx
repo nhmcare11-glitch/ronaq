@@ -8,7 +8,7 @@ export default function FavoritesPage() {
   const { favorites } = useFavorites();
 
   return (
-    <div style={{ padding: "32px 16px", minHeight: "60vh",paddingTop: "56px",
+    <div style={{ padding: "32px 16px", minHeight: "60vh",
 
      }}>
       <h1 style={{

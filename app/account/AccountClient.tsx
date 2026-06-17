@@ -1,11 +1,5 @@
 "use client";
-if (typeof window !== "undefined") {
-  window.onerror = function(msg, src, line) {
-    document.body.innerHTML = `<div style="padding:20px;color:red;font-size:14px;direction:ltr">
-      ERROR: ${msg}<br/>Line: ${line}<br/>File: ${src}
-    </div>`;
-  };
-}
+
 
 import { useState, useEffect, useRef } from "react";
 
@@ -124,7 +118,7 @@ export default function AccountPage() {
     );
 
   return (
-    <div style={{ maxWidth: 420, margin: "0 auto", padding: "32px 20px",paddingTop: "56px",
+    <div style={{ maxWidth: 420, margin: "0 auto", padding: "32px 20px",
 
      }}>
       <h1 style={{

@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <FavoritesProvider>
           <StoreHydration />
           <Navbar />
-          <main>{children}</main>
+          <main style={{ paddingTop: "56px" }}>{children}</main>
           <Footer />
         </FavoritesProvider>
       </body>
