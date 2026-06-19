@@ -41,9 +41,8 @@ export default async function AdminDashboard() {
       </div>
 
       {/* الإحصائيات */}
-      <div style={{
+      <div className="admin-stats-grid" style={{
         display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
         gap: "16px",
         marginBottom: "32px",
       }}>
@@ -112,7 +111,8 @@ export default async function AdminDashboard() {
             لا توجد طلبات بعد
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+          <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0", minWidth: "480px" }}>
             {/* رأس الجدول */}
             <div style={{
               display: "grid",
@@ -164,6 +164,7 @@ export default async function AdminDashboard() {
                 </span>
               </div>
             ))}
+          </div>
           </div>
         )}
       </div>

@@ -319,9 +319,8 @@ export default function NewProductPage() {
                   اللون {i + 1}
                 </div>
 
-                <div style={{
+                <div className="admin-variant-row" style={{
                   display: "grid",
-                  gridTemplateColumns: "1fr 60px 1fr 80px",
                   gap: "10px",
                   alignItems: "end",
                 }}>

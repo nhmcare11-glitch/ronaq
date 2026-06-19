@@ -78,6 +78,34 @@ button, a, [role="button"], input, select, textarea {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
+/* ===== لوحة التحكم — تجاوب على الهاتف ===== */
+.admin-stats-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 640px) {
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-variant-row {
+  grid-template-columns: 1fr 60px 1fr 80px;
+}
+
+@media (max-width: 640px) {
+  .admin-variant-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.admin-products-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 /* تأثيرات الأزرار */
 button, a {
   transition: transform 0.15s ease, opacity 0.15s ease;
