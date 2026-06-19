@@ -39,7 +39,15 @@ export default function ImageUpload({ value, onChange }: Props) {
   }
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+    <div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    flexWrap: "wrap",
+    width: "100%",
+  }}
+>
       {/* معاينة الصورة */}
       {value && (
         <div style={{

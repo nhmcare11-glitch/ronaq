@@ -43,6 +43,7 @@ export default function Navbar() {
     touchAction: "manipulation",
     flexShrink: 0,
     transition: "color 0.3s ease",
+    userSelect: "none",
   };
 
   return (

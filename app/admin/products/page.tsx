@@ -79,11 +79,19 @@ export default async function AdminProductsPage() {
           </Link>
         </div>
       ) : (
-        <div style={{ border: "0.5px solid var(--border)" }}>
+       <div
+  style={{
+    border: "0.5px solid var(--border)",
+    overflowX: "auto",
+    WebkitOverflowScrolling: "touch",
+  }}
+>
           {/* رأس الجدول */}
           <div style={{
             display: "grid",
-            gridTemplateColumns: "60px 1fr 120px 80px 80px 100px",
+           gridTemplateColumns:
+"60px minmax(180px,1fr) 120px 100px 100px 120px",
+minWidth: "760px",
             padding: "12px 16px",
             background: "var(--sand)",
             borderBottom: "0.5px solid var(--border)",
@@ -103,7 +111,9 @@ export default async function AdminProductsPage() {
           {products.map((product) => (
             <div key={product.id} style={{
               display: "grid",
-              gridTemplateColumns: "60px 1fr 120px 80px 80px 100px",
+             gridTemplateColumns:
+"60px minmax(180px,1fr) 120px 100px 100px 120px",
+minWidth: "760px",
               padding: "14px 16px",
               borderBottom: "0.5px solid var(--border)",
               alignItems: "center",

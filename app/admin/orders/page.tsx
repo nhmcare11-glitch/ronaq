@@ -59,7 +59,8 @@ export default async function OrdersPage() {
               {/* هيدر الطلب */}
               <div style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
+               gridTemplateColumns:
+"repeat(auto-fit,minmax(160px,1fr))",
                 padding: "16px 20px",
                 borderBottom: "0.5px solid var(--border)",
                 alignItems: "center",
@@ -116,8 +117,10 @@ export default async function OrdersPage() {
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                   {order.items.map((item) => (
                     <div key={item.id} style={{
-                      display: "flex",
-                      alignItems: "center",
+                     display: "flex",
+alignItems: "center",
+flexWrap: "wrap",
+rowGap: "8px",
                       gap: "12px",
                       fontSize: "12px",
                       color: "var(--charcoal)",
