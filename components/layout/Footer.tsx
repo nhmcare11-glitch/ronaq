@@ -167,7 +167,7 @@ export default function Footer() {
               borderTop: "0.5px solid #444441", paddingTop: "20px",
               fontSize: "10px", color: "#5F5E5A",
             }}>
-              © 2025 Ronaq Store — جميع الحقوق محفوظة
+              © 2026 Ronaq Store — جميع الحقوق محفوظة
             </div>
           </FadeIn>
 
