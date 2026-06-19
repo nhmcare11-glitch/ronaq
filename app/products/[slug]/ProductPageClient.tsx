@@ -124,7 +124,7 @@ export default function ProductPageClient({ product }: { product: Product }) {
               fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase",
               color: "var(--gold)", marginBottom: "5px", fontWeight: 300,
             }}>
-              رونق — مجموعة ٢٠٢٥
+              رونق — مجموعة ٢٠٢٦
             </div>
             <h1 style={{
               fontFamily: "var(--font-display)", fontSize: "24px",
